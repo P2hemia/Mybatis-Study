@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：绑定一个对应的Dao/Mapper接口-->
+<!--<mapper namespace="org.mybatis.example.BlogMapper">-->
+<mapper namespace="nyist.edu.dao.UserMapper">
+
+<!--select查询语句，id为方法名字，resultType为方法所在目录-->
+
+<!--    查询所有用户-->
+<!--    1-->
+    <select id="getUserList" resultType="User" >
+        select * from mybatis.user
+    </select>
+
+<!--    <select id="getUserById" parameterType="int" resultType="cn.nyist.edu.pojo.User">-->
+<!--        select * from mybatis.user where id = #{id}-->
+<!--    </select>-->
+
+<!--    按照id查找某个用户-->
+<!--    2-->
+<!--    结果集映射-->
+    <resultMap id="UserMap" type="User">
+<!--        column数据库中的字段, property实体类中的属性-->
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pwd" property="password"/>
+    </resultMap>
+    
+    <select id="getUserById"  resultMap="UserMap" >
+        select * from mybatis.user where id=#{id}
+    </select>
+
+<!--    对象中的属性，可以直接取出来-->
+<!--    添加一个用户-->
+<!--    3-->
+    <insert id="addUser" parameterType="nyist.edu.pojo.User">
+        insert into mybatis.user (id,name,pwd) values (#{id},#{name},#{pwd})
+    </insert>
+
+<!--    修改一个用户的所有信息-->
+<!--    4-->
+    <update id="updateUser" parameterType="nyist.edu.pojo.User">
+        update mybatis.user set  name=#{name},pwd=#{pwd}  where id =#{id};
+    </update>
+
+<!--    删除一个用户信息-->
+<!--    5-->
+    <delete id="deleteUser" parameterType="int">
+        delete from mybatis.user where id=#{id}
+    </delete>
+
+<!--    分页功能的实现-->
+    <select id="getUserByLimit" parameterType="map" resultMap="UserMap">
+        select * from mybatis.user limit #{startIndex},#{pageSize}
+    </select>
+
+<!--    分页功能实现2-->
+    <select id="getUserByRowBounds"  resultMap="UserMap">
+        select * from mybatis.user
+    </select>
+</mapper>
